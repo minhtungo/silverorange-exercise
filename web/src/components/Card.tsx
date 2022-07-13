@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import axios from 'axios';
+import { fetchData } from './../utils/fetchData';
+import RepoMarkDown from './RepoMarkDown';
 
 const Card = ({
   id,
@@ -13,14 +15,15 @@ const Card = ({
   filterRepository,
 }) => {
   const [latestCommit, setLatestCommit] = useState({});
+  const [mdContent, setMdContent] = useState('');
   const [showMore, setShowMore] = useState(false);
 
-  const handleClick = (commitUrl) => {
+  const handleClick = (commitUrl, fullName) => {
     if (Object.keys(latestCommit).length === 0) {
       //remove "{sha}"" in the commit Url
       const commitHistoryUrl = commitUrl.replace('{/sha}', '');
 
-      const fetchData = async () => {
+      const fetchLatestCommit = async () => {
         try {
           const { data } = await axios.get(commitHistoryUrl);
           // set the first commit object in the response which is the latest commit
@@ -29,7 +32,11 @@ const Card = ({
           throw new Error(error);
         }
       };
-      fetchData();
+      fetchLatestCommit();
+
+      //
+      const markDownUrl = `https://raw.githubusercontent.com/${fullName}/master/README.md`;
+      fetchData(markDownUrl, setMdContent);
     }
   };
 
@@ -50,11 +57,14 @@ const Card = ({
       </button>
       {/* only show commit info when clicked and latest commit already fetched */}
       {showMore && latestCommit && (
-        <div>
-          <h5>Latest Commit on {latestCommit.author?.date}</h5>
-          <h4>{latestCommit.author?.name}</h4>
-          <p>{latestCommit?.message}</p>
-        </div>
+        <>
+          <div>
+            <h5>Latest Commit on {latestCommit.author?.date}</h5>
+            <h4>{latestCommit.author?.name}</h4>
+            <p>{latestCommit?.message}</p>
+          </div>
+          {mdContent && <RepoMarkDown content={mdContent} />}
+        </>
       )}
     </div>
   );
