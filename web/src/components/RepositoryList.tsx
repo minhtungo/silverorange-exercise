@@ -16,6 +16,8 @@ const RepositoryList = () => {
     fetchData('http://localhost:4000/repos', setRepos);
   }, []);
 
+  console.log(repos);
+
   return (
     <div className="repository-list">
       {/* sort repos by reverse chronological order with mutating the repos  */}
@@ -49,7 +51,10 @@ const RepositoryList = () => {
             )
           )
       ) : (
-        <h3>Fetching...</h3>
+        <>
+          <h4>Fetching...</h4>
+          {repos.error && <h3>{repos.error.message}</h3>}
+        </>
       )}
     </div>
   );
