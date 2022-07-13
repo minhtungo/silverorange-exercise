@@ -15,7 +15,7 @@ repos.get('/', async (_: Request, res: Response) => {
     //handle getting data from both sources concurrently and return single aggregated response
     const response = await Promise.all([
       jsonfile.readFile(filePath),
-      // axios.get('https://api.github.com/users/silverorange/repos'),
+      axios.get('https://api.github.com/users/silverorange/repos'),
     ]);
     const fetchedRepo = response.map((repo) => (repo.data ? repo.data : repo));
     const filteredRepo = fetchedRepo.flat().filter((repo) => !repo.fork);

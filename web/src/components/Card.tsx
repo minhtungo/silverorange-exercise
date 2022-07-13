@@ -13,6 +13,7 @@ const Card = ({
   commitsUrl,
   fullName,
   filterRepository,
+  setSelectedLanguage,
 }) => {
   const [latestCommit, setLatestCommit] = useState({});
   const [mdContent, setMdContent] = useState('');
@@ -29,7 +30,6 @@ const Card = ({
           const { data } = await axios.get(commitHistoryUrl);
           // set the first commit object in the response which is the latest commit
           setLatestCommit(data[0].commit);
-          console.log(latestCommit);
         } catch (error) {
           throw new Error(error);
         }
@@ -56,7 +56,7 @@ const Card = ({
         <h3>{name}</h3>
         <p>{description}</p>
         <p className="count">Fork Count: {forksCount}</p>
-        <button onClick={() => filterRepository(language, 'language')}>
+        <button onClick={() => setSelectedLanguage(language)}>
           {language}
         </button>
         {/* only show commit info when clicked and latest commit already fetched */}
@@ -83,6 +83,7 @@ const Card = ({
           </>
         )}
       </div>
+      {/* do not show the modal when clicking the repo to hide commit info */}
       {showMore && (
         <RepoMarkDown
           content={mdContent}
