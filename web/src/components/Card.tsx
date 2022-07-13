@@ -17,6 +17,7 @@ const Card = ({
   const [latestCommit, setLatestCommit] = useState({});
   const [mdContent, setMdContent] = useState('');
   const [showMore, setShowMore] = useState(false);
+  const [showMdModal, setShowMdModal] = useState(false);
 
   const handleClick = (commitUrl, fullName) => {
     if (Object.keys(latestCommit).length === 0) {
@@ -42,41 +43,54 @@ const Card = ({
   };
 
   return (
-    <div
-      key={id}
-      onClick={() => {
-        setShowMore(!showMore);
-        handleClick(commitsUrl, fullName);
-      }}
-      className="card"
-    >
-      <h3>{name}</h3>
-      <p>{description}</p>
-      <p className="count">Fork Count: {forksCount}</p>
-      <button onClick={() => filterRepository(language, 'language')}>
-        {language}
-      </button>
-      {/* only show commit info when clicked and latest commit already fetched */}
-      {showMore && latestCommit && (
-        <>
-          <div>
-            {latestCommit.author ? (
-              <>
-                <h5>Latest Commit on {latestCommit.author?.date}</h5>
-                <h4>{latestCommit.author?.name}</h4>
-                <p>{latestCommit?.message}</p>
-              </>
-            ) : (
-              <>
-                <h4>Fetching commit data...</h4>
-                {latestCommit.error && <h5>No Commit Info For This Repo</h5>}
-              </>
+    <>
+      <div
+        key={id}
+        onClick={() => {
+          setShowMore(!showMore);
+          handleClick(commitsUrl, fullName);
+          setShowMdModal(true);
+        }}
+        className="card"
+      >
+        <h3>{name}</h3>
+        <p>{description}</p>
+        <p className="count">Fork Count: {forksCount}</p>
+        <button onClick={() => filterRepository(language, 'language')}>
+          {language}
+        </button>
+        {/* only show commit info when clicked and latest commit already fetched */}
+        {latestCommit && (
+          <>
+            {showMore && (
+              <div>
+                {latestCommit.author ? (
+                  <>
+                    <h5>Latest Commit on {latestCommit.author?.date}</h5>
+                    <h4>{latestCommit.author?.name}</h4>
+                    <p>{latestCommit?.message}</p>
+                  </>
+                ) : (
+                  <>
+                    <h4>Fetching commit data...</h4>
+                    {latestCommit.error && (
+                      <h5>No Commit Info For This Repo</h5>
+                    )}
+                  </>
+                )}
+              </div>
             )}
-          </div>
-          {mdContent && <RepoMarkDown content={mdContent} />}
-        </>
+          </>
+        )}
+      </div>
+      {showMore && (
+        <RepoMarkDown
+          content={mdContent}
+          show={showMdModal}
+          setShow={setShowMdModal}
+        />
       )}
-    </div>
+    </>
   );
 };
 export default Card;
