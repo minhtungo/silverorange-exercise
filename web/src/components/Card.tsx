@@ -15,8 +15,20 @@ const Card = ({
   const [latestCommit, setLatestCommit] = useState({});
   const [showMore, setShowMore] = useState(false);
 
-  const handleClick = (commitUrl, fullName = '') => {
+  const handleClick = (commitUrl) => {
+    if (Object.keys(latestCommit).length === 0) {
+      const commitHistoryUrl = commitUrl.replace('{/sha}', '');
 
+      const fetchData = async () => {
+        try {
+          const { data } = await axios.get(commitHistoryUrl);
+          setLatestCommit(data[0].commit);
+        } catch (error) {
+          throw new Error(error);
+        }
+      };
+      fetchData();
+    }
   };
 
   return (
@@ -34,7 +46,13 @@ const Card = ({
       <button onClick={() => filterRepository(language, 'language')}>
         {language}
       </button>
-
+      {showMore && latestCommit && (
+        <>
+          <h5>Latest Commit on {latestCommit.author?.date}</h5>
+          <h4>{latestCommit.author?.name}</h4>
+          <p>{latestCommit?.message}</p>
+        </>
+      )}
     </div>
   );
 };

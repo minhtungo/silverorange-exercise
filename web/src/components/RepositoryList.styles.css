@@ -19,10 +19,8 @@
   cursor: pointer;
 }
 
-.repository-list .card h3 {
-  margin: 6px auto 3px;
-}
-
+.repository-list .card h3,
+.repository-list .card h4,
 .repository-list .card h5 {
   margin: 6px auto 3px;
 }
