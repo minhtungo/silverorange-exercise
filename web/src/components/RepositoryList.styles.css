@@ -1,0 +1,61 @@
+.repository-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  max-width: 1200px;
+  margin: 40px auto;
+}
+
+.repository-list .card {
+  background: #f2f2f2;
+  color: #262626;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.repository-list .card:hover {
+  cursor: pointer;
+}
+
+.repository-list .card h3 {
+  margin: 6px auto 3px;
+}
+
+.repository-list .card h5 {
+  margin: 6px auto 3px;
+}
+
+.repository-list .card p {
+  margin: 3px auto;
+  color: #666666;
+  font-size: 0.9em;
+}
+
+.repository-list .card .count {
+  color: #808080;
+  font-size: 12px;
+
+  line-height: 1.5em;
+}
+
+.repository-list .card button {
+  color: #4d4d4d;
+  text-decoration: none;
+  display: block;
+  background: #e2e2e2;
+  font-size: 0.9em;
+  width: 100px;
+  text-align: center;
+  width: 120px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #8c8c8c;
+  margin: 20px auto 0;
+}
+
+.repository-list .card button:hover {
+  background: #bfbfbf;
+  cursor: pointer;
+}
